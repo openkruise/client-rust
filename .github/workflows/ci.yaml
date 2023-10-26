@@ -22,7 +22,14 @@ jobs:
       # - https://github.com/rust-lang/cargo/issues/8603
       # - https://github.com/actions/cache/issues/403
       - uses: Swatinem/rust-cache@v2
-      - name: run integration tests
+      - name: build
         uses: actions-rs/cargo@v1
         with:
           command: build
+      - name: create kubernetes cluster
+        run: |
+          scripts/kind.sh
+      - name: test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
